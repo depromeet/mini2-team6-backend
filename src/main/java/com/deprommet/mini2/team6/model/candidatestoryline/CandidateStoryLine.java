@@ -27,4 +27,8 @@ public class CandidateStoryLine {
 	public void increaseLikeCount() {
 		likeCount++;
 	}
+
+	public Integer calculateTotal() {
+		return likeCount + warmCount + sadCount + wantContinueCount;
+	}
 }

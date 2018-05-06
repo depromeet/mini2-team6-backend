@@ -7,19 +7,20 @@ import com.deprommet.mini2.team6.model.storyline.StoryLineRepository;
 import com.deprommet.mini2.team6.model.storylinejob.StoryLineJob;
 import com.deprommet.mini2.team6.model.storylinejob.StoryLineJobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class StoryLineController {
+	private static final PageRequest PAGE_REQUEST = PageRequest.of(0, 1);
+
 	@Autowired
 	private StoryLineRepository storyLineRepository;
 
@@ -34,14 +35,14 @@ public class StoryLineController {
 		return storyLineRepository.findAll(new Sort(Sort.Direction.DESC, "createdAt"));
 	}
 
-	@GetMapping("/api/storylines/z")
+	@GetMapping("/api/storylines/count")
 	public StoryLineCountDto countAllStoryLine() {
 		return StoryLineCountDto.create(storyLineRepository.count());
 	}
 
 	@RequestMapping(value = "/api/storylines/candidates", method = RequestMethod.GET)
 	public List<CandidateStoryLine> findAllCandidateStoryLine() {
-		Optional<StoryLineJob> storyLineJobOptional = storyLineJobRepository.findFirstOrderByCreatedAtDesc();
+		Optional<StoryLineJob> storyLineJobOptional = storyLineJobRepository.findFirstOrderByCreatedAtDesc(PAGE_REQUEST);
 
 		if (storyLineJobOptional.isPresent()) {
 			final StoryLineJob storyLineJob = storyLineJobOptional.get();
@@ -52,8 +53,8 @@ public class StoryLineController {
 	}
 
 	@RequestMapping(value = "/api/storylines/candidates", method = RequestMethod.POST)
-	public CandidateStoryLine insertCandidateStoryLine(@RequestBody CandidateStoryLineDto candidateStoryLineDto) {
-		Optional<StoryLineJob> storyLineJobOptional = storyLineJobRepository.findFirstOrderByCreatedAtDesc();
+	public CandidateStoryLine insertCandidateStoryLine(@RequestBody CandidateStoryLineDto candidateStoryLineDto) throws Exception {
+		Optional<StoryLineJob> storyLineJobOptional = storyLineJobRepository.findFirstOrderByCreatedAtDesc(PAGE_REQUEST);
 
 		if (storyLineJobOptional.isPresent()) {
 			final StoryLineJob storyLineJob = storyLineJobOptional.get();
@@ -69,18 +70,7 @@ public class StoryLineController {
 			return candidateStoryLineRepository.save(candidateStoryLine);
 		}
 
-		final StoryLineJob storyLineJob = storyLineJobRepository.save(StoryLineJob.create());
-
-		final CandidateStoryLine candidateStoryLine = CandidateStoryLine.builder()
-			.storyLineJobId(storyLineJob.getId())
-			.contents(candidateStoryLineDto.getContent())
-			.likeCount(0)
-			.sadCount(0)
-			.warmCount(0)
-			.wantContinueCount(0)
-			.build();
-
-		return candidateStoryLineRepository.save(candidateStoryLine);
+		throw new Exception("Doesn't exist story line job");
 	}
 
 	@Transactional

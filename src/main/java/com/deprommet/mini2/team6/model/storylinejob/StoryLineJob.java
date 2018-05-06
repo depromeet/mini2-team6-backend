@@ -19,6 +19,10 @@ public class StoryLineJob {
 	@CreatedDate
 	private LocalDateTime createdAt;
 
+	public void finish() {
+		isFinish = true;
+	}
+
 	public static StoryLineJob create() {
 		StoryLineJob storyLineJob = new StoryLineJob();
 		storyLineJob.isFinish = false;

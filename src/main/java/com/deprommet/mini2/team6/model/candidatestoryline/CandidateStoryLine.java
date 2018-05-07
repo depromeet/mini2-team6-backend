@@ -32,6 +32,18 @@ public class CandidateStoryLine {
 	public void increaseLikeCount() {
 		likeCount++;
 	}
+	
+	public void increaseWarmCount() {
+		warmCount++;
+	}
+	
+	public void increaseSadCount() {
+		sadCount++;
+	}
+	
+	public void increaseWantContinueCount() {
+		wantContinueCount++;
+	}
 
 	public Integer calculateTotal() {
 		return likeCount + warmCount + sadCount + wantContinueCount;

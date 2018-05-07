@@ -86,4 +86,46 @@ public class StoryLineController {
 
 		return ResponseEntity.badRequest().build();
 	}
+	
+	@Transactional
+	@GetMapping("/api/storylines/candidates/{id}/warm")
+	public ResponseEntity<CandidateStoryLine> warmCandidateStoryLine(@PathVariable Long id) {
+		Optional<CandidateStoryLine> candidateStoryLineOptional = candidateStoryLineRepository.findById(id);
+
+		if (candidateStoryLineOptional.isPresent()) {
+			final CandidateStoryLine candidateStoryLine = candidateStoryLineOptional.get();
+			candidateStoryLine.increaseWarmCount();
+			return ResponseEntity.ok(candidateStoryLine);
+		}
+
+		return ResponseEntity.badRequest().build();
+	}
+	
+	@Transactional
+	@GetMapping("/api/storylines/candidates/{id}/sad")
+	public ResponseEntity<CandidateStoryLine> sadCandidateStoryLine(@PathVariable Long id) {
+		Optional<CandidateStoryLine> candidateStoryLineOptional = candidateStoryLineRepository.findById(id);
+
+		if (candidateStoryLineOptional.isPresent()) {
+			final CandidateStoryLine candidateStoryLine = candidateStoryLineOptional.get();
+			candidateStoryLine.increaseSadCount();
+			return ResponseEntity.ok(candidateStoryLine);
+		}
+
+		return ResponseEntity.badRequest().build();
+	}
+	
+	@Transactional
+	@GetMapping("/api/storylines/candidates/{id}/wantContinue")
+	public ResponseEntity<CandidateStoryLine> wantContinueCandidateStoryLine(@PathVariable Long id) {
+		Optional<CandidateStoryLine> candidateStoryLineOptional = candidateStoryLineRepository.findById(id);
+
+		if (candidateStoryLineOptional.isPresent()) {
+			final CandidateStoryLine candidateStoryLine = candidateStoryLineOptional.get();
+			candidateStoryLine.increaseWantContinueCount();
+			return ResponseEntity.ok(candidateStoryLine);
+		}
+
+		return ResponseEntity.badRequest().build();
+	}
 }

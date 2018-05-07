@@ -46,6 +46,7 @@ public class StoryLineScheduler {
 			if (candidateStoryLineOptional.isPresent()) {
 				final CandidateStoryLine candidateStoryLine = candidateStoryLineOptional.get();
 				final StoryLine storyLine = StoryLine.builder()
+					.storyLineJobId(storyLineJob.getId())
 					.contents(candidateStoryLine.getContents())
 					.likeCount(candidateStoryLine.getLikeCount())
 					.warmCount(candidateStoryLine.getWarmCount())

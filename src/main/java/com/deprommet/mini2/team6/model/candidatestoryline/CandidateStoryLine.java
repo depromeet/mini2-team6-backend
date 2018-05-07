@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -23,6 +25,9 @@ public class CandidateStoryLine {
 	private int warmCount;
 	private int sadCount;
 	private int wantContinueCount;
+
+	@CreatedDate
+	private LocalDateTime createdAt;
 
 	public void increaseLikeCount() {
 		likeCount++;

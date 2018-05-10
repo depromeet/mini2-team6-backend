@@ -62,6 +62,25 @@ public class StoryLineController {
         return Collections.emptyList();
     }
 
+    @RequestMapping(value = "/api/storylines/candidates/top1", method = RequestMethod.GET)
+    public ResponseEntity<CandidateStoryLine> findTop1CandidateStoryLine() {
+        Optional<StoryLineJob> storyLineJobOptional = storyLineJobRepository.findFirstOrderByCreatedAtDesc(PAGE_REQUEST);
+
+        if (storyLineJobOptional.isPresent()) {
+            final StoryLineJob storyLineJob = storyLineJobOptional.get();
+            final Optional<CandidateStoryLine> candidateStoryLine =  candidateStoryLineRepository.findAllByStoryLineJobId(storyLineJob.getId())
+                    .stream()
+                    .sorted((storyLine1, storyLine2) -> storyLine2.calculateTotal().compareTo(storyLine1.calculateTotal()))
+                    .findFirst();
+
+            if (candidateStoryLine.isPresent()){
+                return ResponseEntity.ok(candidateStoryLine.get());
+            }
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
     @RequestMapping(value = "/api/storylines/candidates/top3", method = RequestMethod.GET)
     public List<CandidateStoryLine> findTop3CandidateStoryLine() {
         Optional<StoryLineJob> storyLineJobOptional = storyLineJobRepository.findFirstOrderByCreatedAtDesc(PAGE_REQUEST);

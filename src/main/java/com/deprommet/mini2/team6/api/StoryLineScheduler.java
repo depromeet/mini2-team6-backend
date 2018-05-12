@@ -31,7 +31,7 @@ public class StoryLineScheduler {
 	private CandidateStoryLineRepository candidateStoryLineRepository;
 
 	@Transactional
-	@Scheduled(fixedDelay = 10 * 60 * 1000)
+	@Scheduled(fixedDelay = 3 * 60 * 1000)
 	public void doJob() {
 		log.info("Start do job");
 		Optional<StoryLineJob> storyLineJobOptional = storyLineJobRepository.findFirstOrderByCreatedAtDesc(PAGE_REQUEST);
